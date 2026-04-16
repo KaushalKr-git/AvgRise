@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>AvgRise</title>
+
+<style>
+body {
+  font-family: Arial;
+  margin: 0;
+  background: #f5f7fa;
+  text-align: center;
+}
+
+header {
+  background: #007BFF;
+  color: white;
+  padding: 15px;
+}
+
+.container { padding: 15px; }
+
+input, button {
+  padding: 10px;
+  margin: 5px;
+}
+
+button {
+  background: #007BFF;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.section {
+  background: white;
+  margin: 10px auto;
+  padding: 10px;
+  width: 300px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.chat-box {
+  height: 150px;
+  overflow-y: auto;
+}
+
+.message { margin: 5px; padding: 5px; border-radius: 5px; }
+.student { background: #d1e7ff; }
+.ai { background: #ffe4b5; }
+
+.timer { font-size: 25px; }
+
+.hidden { display: none; }
+</style>
+</head>
+
+<body>
+
+<header>
+<h2>AvgRise 🚀</h2>
+<p>From Average to Achiever</p>
+</header>
+
+<div class="container">
+
+<div id="login" class="section">
+<h3>Login</h3>
+<input id="name" placeholder="Enter name">
+<button onclick="login()">Enter</button>
+</div>
+
+<div id="main" class="hidden">
+
+<h3 id="welcome"></h3>
+
+<div class="section">
+<h4>Study Timer ⏱️</h4>
+<div class="timer" id="timer">25:00</div>
+<button onclick="startTimer()">Start</button>
+</div>
+
+<div class="section">
+<h4>Set Goal 🎯</h4>
+<input id="goal" placeholder="Your goal">
+<button onclick="saveGoal()">Save</button>
+<p id="goalDisplay"></p>
+</div>
+
+<div class="section">
+<h4>Progress 📊</h4>
+<p id="progress">Study Time: 0 min</p>
+</div>
+
+<div class="section">
+<h4>AI Assistant 🤖</h4>
+<div class="chat-box" id="chatBox"></div>
+<input id="msg" placeholder="Ask something">
+<button onclick="sendMsg()">Send</button>
+</div>
+
+<div class="section">
+<h4>Nearby Teacher 👨‍🏫</h4>
+<p>Raj Sir (Maths)</p>
+<button onclick="connect()">Message</button>
+</div>
+
+<div class="section">
+<h4>Motivation 💬</h4>
+<p id="quote"></p>
+<button onclick="newQuote()">New Quote</button>
+</div>
+
+</div>
+
+</div>
+
+<script>
+function login(){
+  let n = document.getElementById("name").value;
+  if(n==="") return;
+  document.getElementById("login").classList.add("hidden");
+  document.getElementById("main").classList.remove("hidden");
+  document.getElementById("welcome").innerText="Hello "+n;
+}
+
+let time=1500, interval, studied=0;
+function startTimer(){
+  clearInterval(interval);
+  interval=setInterval(()=>{
+    if(time<=0){ clearInterval(interval); return; }
+    time--; studied++;
+
+    let m=Math.floor(time/60);
+    let s=time%60;
+
+    document.getElementById("timer").innerText=
+    m+":"+(s<10?"0":"")+s;
+
+    document.getElementById("progress").innerText=
+    "Study Time: "+Math.floor(studied/60)+" min";
+  },1000);
+}
+
+function saveGoal(){
+  let g=document.getElementById("goal").value;
+  document.getElementById("goalDisplay").innerText="Goal: "+g;
+}
+
+function sendMsg(){
+  let msg=document.getElementById("msg").value;
+  if(msg==="") return;
+
+  let box=document.getElementById("chatBox");
+
+  let user=document.createElement("div");
+  user.className="message student";
+  user.innerText="You: "+msg;
+  box.appendChild(user);
+
+  let reply=document.createElement("div");
+  reply.className="message ai";
+
+  if(msg.toLowerCase().includes("math")){
+    reply.innerText="AI: Practice daily and revise basics 👍";
+  }else if(msg.toLowerCase().includes("study")){
+    reply.innerText="AI: Make a schedule and stay consistent 💪";
+  }else{
+    reply.innerText="AI: Keep working hard, you will improve 🔥";
+  }
+
+  setTimeout(()=>{
+    box.appendChild(reply);
+    box.scrollTop=box.scrollHeight;
+  },800);
+
+  document.getElementById("msg").value="";
+}
+
+function connect(){
+  alert("Message sent to teacher 👍");
+}
+
+let quotes=[
+"Average hona problem nahi, wahi rehna problem hai 🔥",
+"Consistency is the key 💯",
+"Small steps daily = big success 🚀",
+"Focus on progress, not perfection"
+];
+
+function newQuote(){
+  let q=quotes[Math.floor(Math.random()*quotes.length)];
+  document.getElementById("quote").innerText=q;
+}
+
+newQuote();
+</script>
+
+</body>
+</html>
